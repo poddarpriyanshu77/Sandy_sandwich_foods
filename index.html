@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sandy Sandwich Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #F5F5DC;
+        }
+        
+        header {
+            background: #ffb347;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            font-family: "Poppins", sans-serif;
+        }
+        
+        nav {
+            background: #ff9642;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        nav a {
+            color: white;
+            margin: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .hero {
+            background: url('https://images.unsplash.com/photo-1603046891744-65c9bfb7e3c4') no-repeat center/cover;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            text-shadow: 2px 2px 8px black;
+        }
+        
+        .menu-section {
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .menu-items {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 260px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .order-btn {
+            background: #ff7f27;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        /* CART */
+        
+        #cartSidebar {
+            position: fixed;
+            right: -350px;
+            top: 0;
+            width: 350px;
+            height: 100%;
+            background: white;
+            box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            transition: 0.4s;
+            overflow-y: auto;
+        }
+        
+        #cartSidebar.open {
+            right: 0;
+        }
+        
+        .cart-item {
+            background: #f1f1f1;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        /* CUSTOMER FORM */
+        
+        #customerForm {
+            display: none;
+            background: white;
+            padding: 20px;
+            width: 400px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        #finalMessage {
+            display: none;
+            text-align: center;
+            font-size: 20px;
+            background: #d4ffd4;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+        }
+        
+        footer {
+            background: #333;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>Sandy Sandwich</header>
+
+    <nav>
+        <a onclick="scrollToMenu()">Menu</a>
+        <a onclick="toggleCart()">Cart</a>
+
+    </nav>
+
+    <div class="hero" style="color: mustard;">Delicious Food Every Day!</div>
+    <div class="hero" style="color: mustard;">At your Doorstep!</div>
+
+
+    <section id="menu" class="menu-section">
+        <h2>Our Best Cuisine</h2>
+        <div class="menu-items">
+            <div class="item">
+                <h3>Classic Veg Sandwich</h3>
+                <p>Fresh veggies with mayo.</p>
+                <button class="order-btn" onclick="addToCart('Classic Veg Sandwich', 80)">Add to Cart</button>
+            </div>
+            <div class="item">
+                <h3>Grilled Cheese</h3>
+                <p>Cheesy and crispy.</p>
+                <button class="order-btn" onclick="addToCart('Grilled Cheese', 120)">Add to Cart</button>
+            </div>
+            <div class="item">
+                <h3>Spicy Paneer</h3>
+                <p>Paneer with masala.</p>
+                <button class="order-btn" onclick="addToCart('Spicy Paneer', 150)">Add to Cart</button>
+            </div>
+            <div class="item">
+                <h3>Spicy Grilled Soya Patty Burger</h3>
+                <p>soya with masala.</p>
+                <button class="order-btn" onclick="addToCart('Spicy Paneer', 199)">Add to Cart</button>
+            </div>
+            <div class="item">
+                <h3>Plain sandwich</h3>
+                <p>veggies with mayo.</p>
+                <button class="order-btn" onclick="addToCart('Spicy Paneer', 59)">Add to Cart</button>
+            </div>
+            <div class="item">
+                <h3>Italian Sandwich</h3>
+                <p>Italian sizzling and veggies.</p>
+                <button class="order-btn" onclick="addToCart('Spicy Paneer', 299)">Add to Cart</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CART SIDEBAR -->
+    <div id="cartSidebar">
+        <h2>Your Cart</h2>
+        <div id="cartItems"></div>
+        <h3>Total: ₹<span id="totalPrice">0</span></h3>
+        <button style="background:green;color:white;padding:10px;width:100%;border:none;font-size:18px;border-radius:5px;cursor:pointer;" onclick="proceedDetails()">Proceed</button>
+    </div>
+
+    <!-- CUSTOMER DETAILS FORM -->
+    <div id="customerForm">
+        <h2>Enter Delivery Details</h2>
+        <input type="text" id="custName" placeholder="Full Name">
+        <input type="text" id="custAddress" placeholder="Address">
+        <input type="text" id="custPin" placeholder="Pincode">
+        <input type="email" id="custEmail" placeholder="Email">
+        <button style="background:#ff7f27;color:white;padding:10px;width:100%;border:none;font-size:18px;border-radius:5px;cursor:pointer;" onclick="finalOrder()">Place Order</button>
+    </div>
+
+    <!-- FINAL MESSAGE -->
+    <div id="finalMessage"></div>
+
+    <footer>
+        <p>Contact: +91 9876543210 | sandysandwich@gmail.com | Beside BH1 LOVELY PROFESSIONAL UNIVERSITY</p>
+        <p>Created And Designed by Mr.Priyanshu poddar</p>
+    </footer>
+
+    <script>
+        let cart = [];
+
+        function addToCart(name, price) {
+            cart.push({
+                name,
+                price
+            });
+            updateCart();
+            alert(name + " added to cart!");
+        }
+
+        function updateCart() {
+            const cartDiv = document.getElementById("cartItems");
+            const totalSpan = document.getElementById("totalPrice");
+
+            cartDiv.innerHTML = "";
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                cartDiv.innerHTML += `
+        <div class='cart-item'>
+          <span>${item.name} - ₹${item.price}</span>
+          <button onclick='removeItem(${index})'>X</button>
+        </div>`;
+            });
+
+            totalSpan.textContent = total;
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function toggleCart() {
+            document.getElementById("cartSidebar").classList.toggle("open");
+        }
+
+        function scrollToMenu() {
+            document.getElementById("menu").scrollIntoView({
+                behavior: "smooth"
+            });
+        }
+
+        function proceedDetails() {
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            document.getElementById("customerForm").style.display = "block";
+            toggleCart();
+        }
+
+        function finalOrder() {
+            let name = document.getElementById("custName").value;
+            let addr = document.getElementById("custAddress").value;
+            let pin = document.getElementById("custPin").value;
+            let email = document.getElementById("custEmail").value;
+
+            if (!name || !addr || !pin || !email) {
+                alert("Please fill all details!");
+                return;
+            }
+
+            let orderId = Math.floor(Math.random() * 900000) + 100000;
+
+            document.getElementById("finalMessage").style.display = "block";
+            document.getElementById("finalMessage").innerHTML = `
+      <h2>🎉 Order Placed Successfully!</h2>
+      <p><b>Order ID:</b> ${orderId}</p>
+      <p>Thank you <b>${name}</b>! Your order will be delivered to:</p>
+      <p>${addr}, Pincode: ${pin}</p>
+      <p>A confirmation email has been sent to <b>${email}</b>.</p>
+    `;
+
+            cart = [];
+            updateCart();
+            document.getElementById("customerForm").style.display = "none";
+        }
+    </script>
+
+</body>
+
+</html>
